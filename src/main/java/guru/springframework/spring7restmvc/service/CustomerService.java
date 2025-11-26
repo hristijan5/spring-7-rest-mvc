@@ -1,6 +1,6 @@
-package guru.springframework.spring6restmvc.service;
+package guru.springframework.spring7restmvc.service;
 
-import guru.springframework.spring6restmvc.model.Customer;
+import guru.springframework.spring7restmvc.model.Customer;
 
 import java.util.List;
 import java.util.UUID;

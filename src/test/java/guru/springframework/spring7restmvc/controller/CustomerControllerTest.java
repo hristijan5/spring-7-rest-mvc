@@ -1,8 +1,8 @@
 package guru.springframework.spring7restmvc.controller;
 
 import guru.springframework.spring7restmvc.model.Customer;
-import guru.springframework.spring7restmvc.service.CustomerService;
-import guru.springframework.spring7restmvc.service.CustomerServiceImpl;
+import guru.springframework.spring7restmvc.services.CustomerService;
+import guru.springframework.spring7restmvc.services.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

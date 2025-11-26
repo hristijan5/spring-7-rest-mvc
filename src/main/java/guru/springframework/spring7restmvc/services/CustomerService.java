@@ -1,4 +1,4 @@
-package guru.springframework.spring7restmvc.service;
+package guru.springframework.spring7restmvc.services;
 
 import guru.springframework.spring7restmvc.model.Customer;
 

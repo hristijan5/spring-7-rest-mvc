@@ -1,0 +1,27 @@
+package guru.springframework.spring6restmvc.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.Data;
+import tools.jackson.databind.annotation.JsonDeserialize;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@JsonDeserialize(builder = Customer.CustomerBuilder.class)
+@Builder
+@Data
+public class Customer {
+
+    @JsonProperty
+    private UUID id;
+    @JsonProperty
+    private String customerName;
+    @JsonProperty
+    private Integer version;
+    @JsonProperty
+    private LocalDateTime createdDate;
+    @JsonProperty
+    private LocalDateTime lastModifiedDate;
+
+}

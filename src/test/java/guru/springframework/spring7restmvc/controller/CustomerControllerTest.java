@@ -1,6 +1,5 @@
-package guru.springframework.spring6restmvc.controller;
+package guru.springframework.spring7restmvc.controller;
 
-import guru.springframework.spring7restmvc.controller.CustomerController;
 import guru.springframework.spring7restmvc.model.Customer;
 import guru.springframework.spring7restmvc.service.CustomerService;
 import guru.springframework.spring7restmvc.service.CustomerServiceImpl;

@@ -1,6 +1,5 @@
-package guru.springframework.spring6restmvc.controller;
+package guru.springframework.spring7restmvc.controller;
 
-import guru.springframework.spring7restmvc.controller.BeerController;
 import guru.springframework.spring7restmvc.model.Beer;
 import guru.springframework.spring7restmvc.service.BeerService;
 import guru.springframework.spring7restmvc.service.BeerServiceImpl;

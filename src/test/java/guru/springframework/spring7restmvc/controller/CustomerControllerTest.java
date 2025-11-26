@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CustomerControllerTest {
 
     public static final String CUSTOMER_RESOURCE_PATH = "/api/v1/customer";
+    private static final String CUSTOMER_RESOURCE_PATH_WITH_ID = CUSTOMER_RESOURCE_PATH + "/{customerId}";
 
     @Autowired
     MockMvc mockMvc;
@@ -56,13 +58,22 @@ class CustomerControllerTest {
     @Test
     void getCustomerById() throws Exception {
         Customer customer = customerServiceImpl.getAllCustomers().getFirst();
-        given(customerService.getCustomerById(customer.getId())).willReturn(customer);
+        given(customerService.getCustomerById(customer.getId())).willReturn(Optional.of(customer));
 
-        mockMvc.perform(get(CUSTOMER_RESOURCE_PATH + "/{customerId}", customer.getId())
+        mockMvc.perform(get(CUSTOMER_RESOURCE_PATH_WITH_ID, customer.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(customer.getId().toString()))
                 .andExpect(jsonPath("$.customerName").value(customer.getCustomerName()));
+    }
+
+    @Test
+    void getCustomerIdNotFound() throws Exception {
+        given(customerService.getCustomerById(any(UUID.class))).willReturn(Optional.empty());
+
+        mockMvc.perform(get(CUSTOMER_RESOURCE_PATH_WITH_ID, UUID.randomUUID())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -89,7 +100,7 @@ class CustomerControllerTest {
 
         given(customerService.updateCustomerById(any(UUID.class), any(Customer.class))).willReturn(testCustomer);
 
-        mockMvc.perform(put(CUSTOMER_RESOURCE_PATH + "/{customerId}", testCustomer.getId())
+        mockMvc.perform(put(CUSTOMER_RESOURCE_PATH_WITH_ID, testCustomer.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(testCustomer)))
@@ -99,13 +110,13 @@ class CustomerControllerTest {
     }
 
     @Test
-    void patchCustomerById() throws Exception{
+    void patchCustomerById() throws Exception {
         Customer testCustomer = customerServiceImpl.getAllCustomers().getFirst();
 
         HashMap<String, String> customerPatch = new HashMap<>();
         customerPatch.put("customerName", "Updated Customer Name");
 
-        mockMvc.perform(patch(CUSTOMER_RESOURCE_PATH + "/{customerId}", testCustomer.getId())
+        mockMvc.perform(patch(CUSTOMER_RESOURCE_PATH_WITH_ID, testCustomer.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(customerPatch)))
@@ -124,7 +135,7 @@ class CustomerControllerTest {
     void deleteCustomerById() throws Exception {
         Customer testCustomer = customerServiceImpl.getAllCustomers().getFirst();
 
-        mockMvc.perform(delete(CUSTOMER_RESOURCE_PATH + "/{customerId}", testCustomer.getId())
+        mockMvc.perform(delete(CUSTOMER_RESOURCE_PATH_WITH_ID, testCustomer.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 

@@ -14,7 +14,7 @@ import java.util.*;
 @Service
 public class BeerServiceImpl implements BeerService {
 
-    Map<UUID, BeerDTO> beers = new HashMap<>();
+    final Map<UUID, BeerDTO> beers = new HashMap<>();
 
     public BeerServiceImpl() {
         UUID uuid = UUID.randomUUID();

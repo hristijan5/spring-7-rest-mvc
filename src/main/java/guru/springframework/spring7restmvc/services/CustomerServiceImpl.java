@@ -10,7 +10,7 @@ import java.util.*;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    Map<UUID, CustomerDTO> customers = new HashMap<>();
+    final Map<UUID, CustomerDTO> customers = new HashMap<>();
 
     public CustomerServiceImpl() {
         UUID uuid = UUID.randomUUID();

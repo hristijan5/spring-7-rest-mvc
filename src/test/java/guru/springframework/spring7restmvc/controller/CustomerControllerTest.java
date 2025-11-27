@@ -1,6 +1,6 @@
 package guru.springframework.spring7restmvc.controller;
 
-import guru.springframework.spring7restmvc.model.Customer;
+import guru.springframework.spring7restmvc.model.CustomerDTO;
 import guru.springframework.spring7restmvc.services.CustomerService;
 import guru.springframework.spring7restmvc.services.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +57,7 @@ class CustomerControllerTest {
 
     @Test
     void getCustomerById() throws Exception {
-        Customer customer = customerServiceImpl.getAllCustomers().getFirst();
+        CustomerDTO customer = customerServiceImpl.getAllCustomers().getFirst();
         given(customerService.getCustomerById(customer.getId())).willReturn(Optional.of(customer));
 
         mockMvc.perform(get(CUSTOMER_RESOURCE_PATH_WITH_ID, customer.getId())
@@ -78,11 +78,11 @@ class CustomerControllerTest {
 
     @Test
     void createCustomer() throws Exception {
-        Customer testCustomer = customerServiceImpl.getAllCustomers().getFirst();
+        CustomerDTO testCustomer = customerServiceImpl.getAllCustomers().getFirst();
         testCustomer.setId(null);
         testCustomer.setVersion(null);
 
-        given(customerService.createCustomer(any(Customer.class))).willReturn(customerServiceImpl.getAllCustomers().getFirst());
+        given(customerService.createCustomer(any(CustomerDTO.class))).willReturn(customerServiceImpl.getAllCustomers().getFirst());
 
         mockMvc.perform(post(CUSTOMER_RESOURCE_PATH)
                         .accept(MediaType.APPLICATION_JSON)
@@ -95,10 +95,10 @@ class CustomerControllerTest {
 
     @Test
     void updateCustomerById() throws Exception {
-        Customer testCustomer = customerServiceImpl.getAllCustomers().getFirst();
-        testCustomer.setCustomerName("Updated Customer Name");
+        CustomerDTO testCustomer = customerServiceImpl.getAllCustomers().getFirst();
+        testCustomer.setCustomerName("Updated CustomerDTO Name");
 
-        given(customerService.updateCustomerById(any(UUID.class), any(Customer.class))).willReturn(testCustomer);
+        given(customerService.updateCustomerById(any(UUID.class), any(CustomerDTO.class))).willReturn(testCustomer);
 
         mockMvc.perform(put(CUSTOMER_RESOURCE_PATH_WITH_ID, testCustomer.getId())
                         .accept(MediaType.APPLICATION_JSON)
@@ -106,15 +106,15 @@ class CustomerControllerTest {
                         .content(mapper.writeValueAsString(testCustomer)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customerName").value("Updated Customer Name"));
+                .andExpect(jsonPath("$.customerName").value("Updated CustomerDTO Name"));
     }
 
     @Test
     void patchCustomerById() throws Exception {
-        Customer testCustomer = customerServiceImpl.getAllCustomers().getFirst();
+        CustomerDTO testCustomer = customerServiceImpl.getAllCustomers().getFirst();
 
         HashMap<String, String> customerPatch = new HashMap<>();
-        customerPatch.put("customerName", "Updated Customer Name");
+        customerPatch.put("customerName", "Updated CustomerDTO Name");
 
         mockMvc.perform(patch(CUSTOMER_RESOURCE_PATH_WITH_ID, testCustomer.getId())
                         .accept(MediaType.APPLICATION_JSON)
@@ -123,17 +123,17 @@ class CustomerControllerTest {
                 .andExpect(status().isOk());
 
         ArgumentCaptor<UUID> uuidArgumentCaptor = ArgumentCaptor.forClass(UUID.class);
-        ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
+        ArgumentCaptor<CustomerDTO> customerArgumentCaptor = ArgumentCaptor.forClass(CustomerDTO.class);
 
         verify(customerService).patchCustomerById(uuidArgumentCaptor.capture(), customerArgumentCaptor.capture());
 
         assertEquals(testCustomer.getId(), uuidArgumentCaptor.getValue());
-        assertEquals("Updated Customer Name", customerArgumentCaptor.getValue().getCustomerName());
+        assertEquals("Updated CustomerDTO Name", customerArgumentCaptor.getValue().getCustomerName());
     }
 
     @Test
     void deleteCustomerById() throws Exception {
-        Customer testCustomer = customerServiceImpl.getAllCustomers().getFirst();
+        CustomerDTO testCustomer = customerServiceImpl.getAllCustomers().getFirst();
 
         mockMvc.perform(delete(CUSTOMER_RESOURCE_PATH_WITH_ID, testCustomer.getId())
                         .accept(MediaType.APPLICATION_JSON))

@@ -14,7 +14,7 @@ public interface BeerService {
 
     BeerDTO createBeer(BeerDTO build);
 
-    BeerDTO updateBeerById(UUID id, BeerDTO beer);
+    Optional<BeerDTO> updateBeerById(UUID id, BeerDTO beer);
 
     BeerDTO patchBeerById(UUID id, BeerDTO beer);
 

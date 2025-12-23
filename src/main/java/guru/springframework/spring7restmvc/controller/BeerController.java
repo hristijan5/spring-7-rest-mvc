@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -44,7 +45,8 @@ public class BeerController {
 
     @PutMapping("{id}")
     public ResponseEntity<@NonNull BeerDTO> updateBeerById(@PathVariable UUID id, @RequestBody BeerDTO beer) {
-        BeerDTO updatedBeer = beerService.updateBeerById(id, beer);
+        Optional<BeerDTO> updatedBeer = beerService.updateBeerById(id, beer);
+        if (updatedBeer.isEmpty()) throw new NotFoundException("Beer with id " + id + " not found");
         return new ResponseEntity<>(updatedBeer, HttpStatus.OK);
     }
 

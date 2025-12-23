@@ -3,7 +3,6 @@ package guru.springframework.spring7restmvc.controller;
 import guru.springframework.spring7restmvc.model.CustomerDTO;
 import guru.springframework.spring7restmvc.services.CustomerService;
 import guru.springframework.spring7restmvc.services.CustomerServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +39,6 @@ class CustomerControllerTest {
     CustomerService customerService;
 
     CustomerServiceImpl customerServiceImpl;
-
-    @BeforeEach
-    void setUp() {
-        customerServiceImpl = new CustomerServiceImpl();
-    }
 
     @Test
     void getAllCustomers() throws Exception {
